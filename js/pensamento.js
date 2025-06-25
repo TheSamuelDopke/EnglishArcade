@@ -4,7 +4,7 @@ const words = {
     {en: 'cat', pt: 'gato'}, {en: 'dog', pt: 'cachorro'}, {en: 'house', pt: 'casa'},
     {en: 'sun', pt: 'sol'}, {en: 'book', pt: 'livro'}, {en: 'car', pt: 'carro'},
     {en: 'milk', pt: 'leite'}, {en: 'water', pt: 'água'}, {en: 'bread', pt: 'pão'},
-    {en: 'apple', pt: 'maçã'}, {en: 'banana', pt: 'banana'}, {en: 'school', pt: 'escola'},
+    {en: 'apple', pt: 'maçã'}, {en: 'school', pt: 'escola'},
     {en: 'pen', pt: 'caneta'}, {en: 'chair', pt: 'cadeira'}, {en: 'table', pt: 'mesa'},
     {en: 'window', pt: 'janela'}, {en: 'door', pt: 'porta'}, {en: 'tree', pt: 'árvore'},
     {en: 'flower', pt: 'flor'}, {en: 'phone', pt: 'telefone'}
@@ -160,6 +160,21 @@ function resetGame() {
 initDB(() => {
   checkSavedNickname(); // Apenas preenche o campo se houver nickname salvo, não inicia o jogo
   loadRanking();
+});
+
+document.addEventListener('keydown', (event) => {
+  const translationInput = document.getElementById('translationInput');
+
+  // Só executa se o campo de tradução estiver visível
+  const gameSectionVisible = !document.getElementById('gameSection').classList.contains('hidden');
+
+  if (gameSectionVisible && document.activeElement === translationInput) {
+    if (event.key === 'Enter') {
+      checkTranslation();
+    } else if (event.key === 'Escape') {
+      giveUp();
+    }
+  }
 });
 
 // Expor funções para o escopo global (window) para que o HTML possa chamá-las diretamente
