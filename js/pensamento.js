@@ -11,18 +11,18 @@ const words = {
   ],
   intermediate: [
     {en: 'kitchen', pt: 'cozinha'}, {en: 'mirror', pt: 'espelho'}, {en: 'garden', pt: 'jardim'},
-    {en: 'bottle', pt: 'garrafa'}, {en: 'teacher', pt: 'professor'}, {en: 'student', pt: 'aluno'},
+    {en: 'bottle', pt: 'garrafa'}, {en: 'teacher', pt: 'professor'}, {en: 'student', pt: ['aluno', 'estudante']},
     {en: 'market', pt: 'mercado'}, {en: 'clothes', pt: 'roupas'}, {en: 'computer', pt: 'computador'},
-    {en: 'keyboard', pt: 'teclado'}, {en: 'mouse', pt: 'mouse'}, {en: 'pencil', pt: 'lápis'},
+    {en: 'keyboard', pt: 'teclado'}, {en: 'mouse', pt: 'rato'}, {en: 'pencil', pt: 'lápis'},
     {en: 'notebook', pt: 'caderno'}, {en: 'television', pt: 'televisão'}, {en: 'refrigerator', pt: 'geladeira'},
     {en: 'street', pt: 'rua'}, {en: 'traffic', pt: 'trânsito'}, {en: 'weather', pt: 'clima'},
     {en: 'holiday', pt: 'feriado'}, {en: 'birthday', pt: 'aniversário'}, {en: 'medicine', pt: 'remédio'},
     {en: 'hospital', pt: 'hospital'}, {en: 'airplane', pt: 'avião'}, {en: 'airport', pt: 'aeroporto'},
     {en: 'bicycle', pt: 'bicicleta'}, {en: 'mountain', pt: 'montanha'}, {en: 'river', pt: 'rio'},
-    {en: 'forest', pt: 'floresta'}, {en: 'countryside', pt: 'campo'}, {en: 'city', pt: 'cidade'}
+    {en: 'forest', pt: 'floresta'}, {en: 'countryside', pt: ['campo', 'interior']}, {en: 'city', pt: 'cidade'}
   ],
   advanced: [
-    {en: 'achievement', pt: 'realização'}, {en: 'development', pt: 'desenvolvimento'}, {en: 'relationship', pt: 'relacionamento'},
+    {en: 'achievement', pt: ['realização', 'conquista']}, {en: 'development', pt: 'desenvolvimento'}, {en: 'relationship', pt: 'relacionamento'},
     {en: 'government', pt: 'governo'}, {en: 'environment', pt: 'meio ambiente'}, {en: 'responsibility', pt: 'responsabilidade'},
     {en: 'opportunity', pt: 'oportunidade'}, {en: 'investment', pt: 'investimento'}, {en: 'leadership', pt: 'liderança'},
     {en: 'partnership', pt: 'parceria'}, {en: 'knowledge', pt: 'conhecimento'}, {en: 'management', pt: 'gestão'},
@@ -89,16 +89,22 @@ function giveUp() {
 
 function checkTranslation() {
   const input = document.getElementById('translationInput').value.trim().toLowerCase();
-  if (input === currentWord.pt.toLowerCase()) {
+
+  // Garante que pt seja um array
+  const validAnswers = Array.isArray(currentWord.pt) ? currentWord.pt : [currentWord.pt];
+  const validAnswersLower = validAnswers.map(ans => ans.toLowerCase());
+
+  if (validAnswersLower.includes(input)) {
     score++;
     document.getElementById('score').textContent = score;
     nextWord();
   } else {
     saveToRanking(nickname, score);
-    alert(`Errou! A tradução correta era: ${currentWord.pt}. Você fez ${score} pontos.`);
+    alert(`Errou! A tradução correta era: ${validAnswers.join(' ou ')}. Você fez ${score} pontos.`);
     resetGame(); // Volta para a tela de nickname
   }
 }
+
 
 function loadRanking() {
   getRanking((ranking) => {
@@ -162,6 +168,7 @@ initDB(() => {
   loadRanking();
 });
 
+// Função do botão Enter
 document.addEventListener('keydown', (event) => {
   const translationInput = document.getElementById('translationInput');
 
