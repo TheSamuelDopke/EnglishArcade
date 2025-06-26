@@ -40,7 +40,7 @@ export function getSavedNickname(callback) {
   };
 }
 
-export function saveToRanking(nickname, score) {
+export function saveToRanking(nickname, score, callback) { // Adicionado callback
   const tx = db.transaction('ranking', 'readwrite');
   const store = tx.objectStore('ranking');
 
@@ -58,11 +58,39 @@ export function saveToRanking(nickname, score) {
     data.sort((a, b) => b.score - a.score);
     data = data.slice(0, 10);
 
-    const clearTx = db.transaction('ranking', 'readwrite');
-    const clearStore = clearTx.objectStore('ranking');
-    clearStore.clear().onsuccess = () => {
-      data.forEach(entry => clearStore.put(entry));
+    const clearReq = store.clear(); // Limpa o store
+    clearReq.onsuccess = () => {
+      let putCount = 0;
+      if (data.length === 0) { // Se não há dados para adicionar, chama o callback imediatamente
+          if (callback) callback();
+          return;
+      }
+
+      data.forEach(entry => {
+        const putReq = store.put(entry);
+        putReq.onsuccess = () => {
+          putCount++;
+          if (putCount === data.length) { // Se todos os 'puts' foram concluídos
+            if (callback) callback(); // Chama o callback
+          }
+        };
+        putReq.onerror = () => {
+          console.error("Erro ao adicionar item ao ranking.");
+          putCount++; // Mesmo com erro, incrementa para tentar finalizar
+          if (putCount === data.length) {
+            if (callback) callback();
+          }
+        };
+      });
     };
+    clearReq.onerror = () => {
+      console.error("Erro ao limpar o store de ranking.");
+      if (callback) callback(); // Chamar callback mesmo em caso de erro para não travar
+    };
+  };
+  getAllReq.onerror = () => {
+    console.error("Erro ao obter ranking para salvar.");
+    if (callback) callback(); // Chamar callback mesmo em caso de erro para não travar
   };
 }
 
