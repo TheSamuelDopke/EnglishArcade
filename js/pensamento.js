@@ -46,7 +46,7 @@ import {
   getSavedNickname,
   saveToRanking,
   getRanking
-} from './index.db.js'; // Caminho de importação CORRIGIDO
+} from './index.db.js';
 
 let nickname = '';
 let score = 0;
@@ -64,34 +64,33 @@ function startGame() {
   document.getElementById('playerName').textContent = nickname;
   document.getElementById('nicknameSection').classList.add('hidden');
   document.getElementById('gameSection').classList.remove('hidden');
-  var translationInput = document.getElementById('translationInput'); // Limpa o campo de tradução
-  translationInput.focus()
-  score = 0; // Reseta a pontuação ao iniciar um novo jogo
+  var translationInput = document.getElementById('translationInput');
+  translationInput.focus();
+  score = 0;
   document.getElementById('score').textContent = score;
-  usedWords = []; // Reseta as palavras usadas
+  usedWords = [];
   nextWord();
 }
 
-// Esta função não será mais chamada na inicialização automática
-// Ela pode ser usada se você tiver um botão "Continuar com Nickname Salvo"
 function checkSavedNickname() {
   getSavedNickname((savedName) => {
     if (savedName) {
-      document.getElementById('nicknameInput').value = savedName; // Preenche o input com o nickname salvo
+      document.getElementById('nicknameInput').value = savedName;
     }
   });
 }
 
 function giveUp() {
-  saveToRanking(nickname, score);
-  alert(`Você desistiu com ${score} pontos.`);
-  resetGame(); // Volta para a tela de nickname
+  // Passa loadRanking como callback para saveToRanking
+  saveToRanking(nickname, score, () => {
+    alert(`Você desistiu com ${score} pontos.`);
+    resetGame();
+  });
 }
 
 function checkTranslation() {
   const input = document.getElementById('translationInput').value.trim().toLowerCase();
 
-  // Garante que pt seja um array
   const validAnswers = Array.isArray(currentWord.pt) ? currentWord.pt : [currentWord.pt];
   const validAnswersLower = validAnswers.map(ans => ans.toLowerCase());
 
@@ -100,12 +99,13 @@ function checkTranslation() {
     document.getElementById('score').textContent = score;
     nextWord();
   } else {
-    saveToRanking(nickname, score);
-    alert(`Errou! A tradução correta era: ${validAnswers.join(' ou ')}. Você fez ${score} pontos.`);
-    resetGame(); // Volta para a tela de nickname
+    // Passa loadRanking como callback para saveToRanking
+    saveToRanking(nickname, score, () => {
+      alert(`Errou! A tradução correta era: ${validAnswers.join(' ou ')}. Você fez ${score} pontos.`);
+      resetGame();
+    });
   }
 }
-
 
 function loadRanking() {
   getRanking((ranking) => {
@@ -124,7 +124,6 @@ function nextWord() {
   const availableWords = words[level].filter(w => !usedWords.includes(w.en));
 
   if (availableWords.length === 0) {
-    // Se todas as palavras para o nível atual foram usadas, tenta o próximo nível
     let nextLevelWords = [];
     if (level === 'basic' && words['intermediate']) {
       nextLevelWords = words['intermediate'].filter(w => !usedWords.includes(w.en));
@@ -139,10 +138,11 @@ function nextWord() {
       document.getElementById('translationInput').value = '';
       return;
     } else {
-      // Todas as palavras em todos os níveis foram completadas ou não há mais palavras no próximo nível
       alert('Você completou todas as palavras disponíveis!');
-      saveToRanking(nickname, score);
-      resetGame(); // Volta para a tela de nickname
+      // Passa loadRanking como callback para saveToRanking
+      saveToRanking(nickname, score, () => {
+        resetGame();
+      });
       return;
     }
   }
@@ -153,27 +153,22 @@ function nextWord() {
   document.getElementById('translationInput').value = '';
 }
 
-// Nova função para resetar o jogo e voltar à tela de nickname
 function resetGame() {
   document.getElementById('gameSection').classList.add('hidden');
   document.getElementById('nicknameSection').classList.remove('hidden');
-  document.getElementById('nicknameInput').value = ''; // Limpa o campo de nickname
-  score = 0; // Reseta a pontuação
-  usedWords = []; // Reseta as palavras usadas
-  loadRanking(); // Recarrega o ranking
+  document.getElementById('nicknameInput').value = '';
+  score = 0;
+  usedWords = [];
+  loadRanking(); // Mantido aqui para garantir que o ranking seja carregado quando o jogo é resetado manualmente
 }
 
-// Inicialização do banco de dados quando o script é carregado
 initDB(() => {
-  checkSavedNickname(); // Apenas preenche o campo se houver nickname salvo, não inicia o jogo
+  checkSavedNickname();
   loadRanking();
 });
 
-// Função do botão Enter
 document.addEventListener('keydown', (event) => {
   const translationInput = document.getElementById('translationInput');
-
-  // Só executa se o campo de tradução estiver visível
   const gameSectionVisible = !document.getElementById('gameSection').classList.contains('hidden');
 
   if (gameSectionVisible && document.activeElement === translationInput) {
@@ -185,7 +180,6 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-// Expor funções para o escopo global (window) para que o HTML possa chamá-las diretamente
 window.startGame = startGame;
 window.checkTranslation = checkTranslation;
 window.giveUp = giveUp;
