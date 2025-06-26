@@ -29,7 +29,7 @@ const words = {
     {en: 'entrepreneur', pt: 'empreendedor'}, {en: 'strategy', pt: 'estratégia'}, {en: 'sustainability', pt: 'sustentabilidade'},
     {en: 'technology', pt: 'tecnologia'}, {en: 'innovation', pt: 'inovação'}, {en: 'negotiation', pt: 'negociação'},
     {en: 'performance', pt: 'desempenho'}, {en: 'efficiency', pt: 'eficiência'}, {en: 'productivity', pt: 'produtividade'},
-    {en: 'organization', pt: 'organização'}, {en: 'communication', pt: 'comunicação'}, {en: 'motivation', pt: 'motivação'},
+    {en: 'communication', pt: 'comunicação'}, {en: 'motivation', pt: 'motivação'},
     {en: 'achievement', pt: 'conquista'}, {en: 'perception', pt: 'percepção'}, {en: 'contribution', pt: 'contribuição'},
     {en: 'collaboration', pt: 'colaboração'}, {en: 'situation', pt: 'situação'}, {en: 'evaluation', pt: 'avaliação'},
     {en: 'qualification', pt: 'qualificação'}, {en: 'application', pt: 'aplicação'}, {en: 'registration', pt: 'registro'},
@@ -64,7 +64,8 @@ function startGame() {
   document.getElementById('playerName').textContent = nickname;
   document.getElementById('nicknameSection').classList.add('hidden');
   document.getElementById('gameSection').classList.remove('hidden');
-  document.getElementById('translationInput').value = ''; // Limpa o campo de tradução
+  var translationInput = document.getElementById('translationInput'); // Limpa o campo de tradução
+  translationInput.focus()
   score = 0; // Reseta a pontuação ao iniciar um novo jogo
   document.getElementById('score').textContent = score;
   usedWords = []; // Reseta as palavras usadas
