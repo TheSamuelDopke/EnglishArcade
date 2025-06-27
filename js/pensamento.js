@@ -168,18 +168,26 @@ initDB(() => {
 });
 
 document.addEventListener('keydown', (event) => {
+  const nicknameInput = document.getElementById('nicknameInput');
   const translationInput = document.getElementById('translationInput');
-  const gameSectionVisible = !document.getElementById('gameSection').classList.contains('hidden');
+  const nicknameVisible = !document.getElementById('nicknameSection').classList.contains('hidden');
+  const gameVisible = !document.getElementById('gameSection').classList.contains('hidden');
 
-  if (gameSectionVisible && document.activeElement === translationInput) {
-    if (event.key === 'Enter') {
+  if (event.key === 'Enter') {
+    if (nicknameVisible && document.activeElement === nicknameInput) {
+      event.preventDefault();
+      startGame();
+    } else if (gameVisible && document.activeElement === translationInput) {
+      event.preventDefault();
       checkTranslation();
-    } else if (event.key === 'Escape') {
-      giveUp();
     }
   }
-});
 
+  if (event.key === 'Escape' && gameVisible && document.activeElement === translationInput) {
+    event.preventDefault();
+    giveUp();
+  }
+});
 window.startGame = startGame;
 window.checkTranslation = checkTranslation;
 window.giveUp = giveUp;
