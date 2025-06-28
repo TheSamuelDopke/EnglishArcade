@@ -64,6 +64,28 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 }
 
+#ranking li {
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+@keyframes moveUp {
+  0% { transform: translateY(15px); opacity: 0.5; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes moveDown {
+  0% { transform: translateY(-15px); opacity: 0.5; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.rank-up {
+  animation: moveUp 0.4s ease-out;
+}
+
+.rank-down {
+  animation: moveDown 0.4s ease-out;
+}
+
 #app {
   max-width: 650px;
   width: 100%;

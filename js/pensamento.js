@@ -52,6 +52,7 @@ let nickname = '';
 let score = 0;
 let usedWords = [];
 let currentWord;
+let lastRanking = [];
 const successSound = new Audio('sounds/success.mp3');
 const failSound = new Audio('sounds/derrota2.mp3')
 
@@ -97,11 +98,17 @@ function checkTranslation() {
   const validAnswersLower = validAnswers.map(ans => ans.toLowerCase());
 
   if (validAnswersLower.includes(input)) {
-    successSound.currentTime = 0; // Garante que o som reinicie
+    successSound.currentTime = 0;
     successSound.play();
-    triggerFirework()
+    triggerFirework();
     score++;
     document.getElementById('score').textContent = score;
+
+    // Atualiza ranking em tempo real após acerto
+    saveToRanking(nickname, score, () => {
+      loadRanking(); // Recarrega a lista no HTML
+    });
+
     nextWord();
   } else {
     failSound.currentTime = 0; // Garante que o som reinicie
@@ -116,14 +123,68 @@ function checkTranslation() {
 function loadRanking() {
   getRanking((ranking) => {
     const list = document.getElementById('ranking');
-    list.innerHTML = '';
-    ranking.forEach(entry => {
-      const li = document.createElement('li');
-      li.textContent = `${entry.nickname} - ${entry.score} pontos`;
-      list.appendChild(li);
+    const itemsMap = {};
+
+    // Guarda posição inicial de cada item (First)
+    const firstPositions = new Map();
+    Array.from(list.children).forEach(li => {
+      itemsMap[li.dataset.nickname] = li;
+      firstPositions.set(li.dataset.nickname, li.getBoundingClientRect());
     });
+
+    // Cria a nova lista reorganizada
+    const newItems = [];
+
+    ranking.forEach((entry, index) => {
+      let li = itemsMap[entry.nickname];
+      if (!li) {
+        li = document.createElement('li');
+        li.dataset.nickname = entry.nickname;
+      }
+      li.textContent = `${entry.nickname} - ${entry.score} pontos`;
+      newItems.push(li);
+    });
+
+    // Substitui a lista sem apagar os elementos
+    list.innerHTML = '';
+    newItems.forEach(li => list.appendChild(li));
+
+    // Espera o DOM aplicar as novas posições (Last)
+    requestAnimationFrame(() => {
+      newItems.forEach(li => {
+        const first = firstPositions.get(li.dataset.nickname);
+        if (!first) return;
+
+        const last = li.getBoundingClientRect();
+
+        const dx = first.left - last.left;
+        const dy = first.top - last.top;
+
+        if (dx !== 0 || dy !== 0) {
+          li.style.transition = 'none';
+          li.style.transform = `translate(${dx}px, ${dy}px)`;
+
+          // Força reflow
+          li.offsetHeight;
+
+          // Ativa transição suave
+          li.style.transition = 'transform 0.4s ease';
+          li.style.transform = 'translate(0, 0)';
+
+          // Após a transição, limpa o estilo
+          li.addEventListener('transitionend', () => {
+            li.style.transition = '';
+            li.style.transform = '';
+          }, { once: true });
+        }
+      });
+    });
+
+    lastRanking = ranking.map(e => ({ ...e }));
   });
 }
+
+
 
 function nextWord() {
   const level = score < 20 ? 'basic' : (score < 50 ? 'intermediate' : 'advanced');
@@ -196,7 +257,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 function triggerFirework() {
-const container = document.getElementById('fireworkContainer');
+  const container = document.getElementById('fireworkContainer');
 
   const launch = document.createElement('div');
   launch.classList.add('firework-launch');
