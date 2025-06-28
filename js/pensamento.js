@@ -48,19 +48,21 @@ import {
   getRanking
 } from './index.db.js';
 
+// Importações das funções musicais
+import {startBackgroundMusic, stopBackgroundMusic} from './music.js'
+
 let nickname = '';
 let score = 0;
 let usedWords = [];
 let currentWord;
 
-function startGame() {
+export function startGame() {
   const input = document.getElementById('nicknameInput');
   nickname = input.value.trim();
   if (!nickname) {
     alert('Digite um nome válido!');
     return;
   }
-  saveNickname(nickname);
   document.getElementById('playerName').textContent = nickname;
   document.getElementById('nicknameSection').classList.add('hidden');
   document.getElementById('gameSection').classList.remove('hidden');
@@ -70,15 +72,11 @@ function startGame() {
   document.getElementById('score').textContent = score;
   usedWords = [];
   nextWord();
+
+  startBackgroundMusic()
 }
 
-function checkSavedNickname() {
-  getSavedNickname((savedName) => {
-    if (savedName) {
-      document.getElementById('nicknameInput').value = savedName;
-    }
-  });
-}
+
 
 function giveUp() {
   // Passa loadRanking como callback para saveToRanking
@@ -86,6 +84,7 @@ function giveUp() {
     alert(`Você desistiu com ${score} pontos.`);
     resetGame();
   });
+  stopBackgroundMusic()
 }
 
 function checkTranslation() {
@@ -160,10 +159,11 @@ function resetGame() {
   score = 0;
   usedWords = [];
   loadRanking(); // Mantido aqui para garantir que o ranking seja carregado quando o jogo é resetado manualmente
+
+  stopBackgroundMusic()
 }
 
 initDB(() => {
-  checkSavedNickname();
   loadRanking();
 });
 
@@ -191,3 +191,5 @@ document.addEventListener('keydown', (event) => {
 window.startGame = startGame;
 window.checkTranslation = checkTranslation;
 window.giveUp = giveUp;
+
+

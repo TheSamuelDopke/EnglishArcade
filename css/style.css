@@ -1,6 +1,11 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+  /* background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); */
   color: #333;
   text-align: center;
   padding: 40px;
@@ -10,6 +15,12 @@ body {
   align-items: center;
   min-height: 100vh; /* Garante que o body ocupa a altura total da viewport */
   box-sizing: border-box; /* Inclui padding e borda na largura/altura */
+  border: 0;
+  padding: 0;
+  background-image: url(../img/backgroundImageGif.gif);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 }
 
 #app {

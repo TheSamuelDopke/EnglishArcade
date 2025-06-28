@@ -9,14 +9,14 @@
   <div id="app">
     <div id="nicknameSection">
       <h2>Digite seu nickname:</h2>
-      <input type="text" id="nicknameInput" placeholder="Seu nome ou apelido" />
+      <input type="text" id="nicknameInput" placeholder="Seu nome ou apelido" autocomplete="off"/>
       <button onclick="startGame()">Começar</button>
     </div>
 
     <div id="gameSection" class="hidden">
       <h2>Bem-vindo, <span id="playerName"></span>!</h2>
       <div class="word" id="englishWord"></div>
-      <input type="text" id="translationInput" placeholder="Digite a tradução" />
+      <input type="text" id="translationInput" placeholder="Digite a tradução" autocomplete="off"/>
       <button onclick="checkTranslation()">Enviar</button>
       <button onclick="giveUp()">Desistir</button>
       <p>Pontos: <span id="score">0</span></p>
@@ -28,7 +28,9 @@
     </div>
   </div>
 
-  <script src="js/index.db.js"></script>
+  <audio src="./js/backgroundMusic.mp3" id="backgroundMusic" style="display: none;"></audio>
+  <script type="module" src="js/music.js"></script>
+  <script type="module" src="js/index.db.js"></script>
   <script type="module" src="js/pensamento.js"></script>
 </body>
 </html>
