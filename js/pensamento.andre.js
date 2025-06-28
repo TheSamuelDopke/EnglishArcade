@@ -237,7 +237,7 @@ function loadRanking() {
 }
 
 function nextWord() {
-  const level = score < 20 ? 'basic' : (score < 50 ? 'intermediate' : 'advanced');
+  const level = score < 21 ? 'basic' : (score < 50 ? 'intermediate' : 'advanced');
   const availableWords = words[level].filter(w => !usedWords.includes(w.en));
 
   if (availableWords.length === 0) {
