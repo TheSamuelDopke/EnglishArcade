@@ -1,13 +1,12 @@
-
-const audio = document.getElementById('backgroundMusic')
+const audio = document.getElementById("backgroundMusic");
 
 export function startBackgroundMusic() {
-    audio.play()
-    audio.loop = true
-    console.log(audio)
+   audio.play();
+   audio.loop = true;
+   console.log(audio);
 }
 
-export function stopBackgroundMusic(){
-    audio.pause()
-    audio.currentTime = 0
+export function stopBackgroundMusic() {
+   audio.pause();
+   audio.currentTime = 0;
 }
