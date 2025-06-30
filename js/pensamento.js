@@ -61,7 +61,7 @@ function startGame() {
   nickname = input.value.trim();
   if (!nickname) {
     alert('Digite um nome válido!');
-    return;
+    return
   }
   saveNickname(nickname);
   document.getElementById('playerName').textContent = nickname;
