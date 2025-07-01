@@ -1,5 +1,5 @@
 // Palavras por nível - Mantenha esta declaração única
-import {words} from './palavras.js'
+import { words } from "./palavras.js";
 
 // Importações do banco de dados
 import {
@@ -19,6 +19,7 @@ let usedWords = [];
 let currentWord;
 const successSound = new Audio("sounds/success.mp3");
 const failSound = new Audio("sounds/derrota2.mp3");
+let errorMessageElement; // Declare it here
 
 export function startGame() {
    const input = document.getElementById("nicknameInput");
@@ -38,17 +39,40 @@ export function startGame() {
    score = 0;
    document.getElementById("score").textContent = score;
    usedWords = [];
-   nextWord();
+
+   // Initialize errorMessageElement here when the game starts
+   errorMessageElement = document.getElementById("errorMessage"); // Get reference here
+   if (errorMessageElement) {
+      // Ensure it exists before trying to clear it
+      errorMessageElement.innerHTML = ""; // Clear any previous error message
+   }
+
+   nextWord(); // This will display the first word and clear any error
 
    startBackgroundMusic();
 }
 
 function giveUp() {
    saveNickname(nickname, score); // salva com pontuação real
-   saveToRanking(nickname, score, () => {
-      alert(`Você desistiu com ${score} pontos.`);
-      resetGame();
-   });
+
+   // Prepare the correct answers for display
+   const validAnswers = Array.isArray(currentWord.pt)
+      ? currentWord.pt
+      : [currentWord.pt];
+   failSound.play();
+   // Exibe a mensagem de desistência
+   errorMessageElement.innerHTML = `
+        Você desistiu com ${score} pontos.<br>
+        <span class="correct-answer">${validAnswers.join(" ou ")}</span>
+   `;
+
+   // Agenda o reset do jogo após 10 segundos para que o usuário possa ver a mensagem.
+   setTimeout(() => {
+      saveToRanking(nickname, score, () => {
+         resetGame();
+      });
+   }, 10000); // 10 segundos de atraso
+
    stopBackgroundMusic();
 }
 
@@ -64,24 +88,31 @@ function checkTranslation() {
    const validAnswersLower = validAnswers.map((ans) => ans.toLowerCase());
 
    if (validAnswersLower.includes(input)) {
-      successSound.currentTime = 0; // Garante que o som reinicie
+      successSound.currentTime = 0;
       successSound.play();
       triggerFirework();
       score++;
       document.getElementById("score").textContent = score;
+      errorMessageElement.innerHTML = ""; // Limpa a mensagem de erro em caso de sucesso
       nextWord();
    } else {
       failSound.currentTime = 0;
       failSound.play();
-      saveNickname(nickname, score); // salva antes de resetar
-      saveToRanking(nickname, score, () => {
-         alert(
-            `Errou! A tradução correta era: ${validAnswers.join(
-               " ou "
-            )}. Você fez ${score} pontos.`
-         );
-         resetGame();
-      });
+
+      // Exibe a mensagem de erro
+      errorMessageElement.innerHTML = `
+            <span class="wrong-answer">${input}</span><br>
+            <span class="correct-answer">${validAnswers.join(" ou ")}</span>
+        `;
+
+      saveNickname(nickname, score); // Salva a pontuação antes de resetar ou continuar
+
+      setTimeout(() => {
+         saveToRanking(nickname, score, () => {
+            // Continua com o salvamento no ranking
+            resetGame(); // Agora o reset acontece após o atraso
+         });
+      }, 10000); //atraso
    }
 }
 
@@ -98,6 +129,13 @@ function loadRanking() {
 }
 
 function nextWord() {
+   // Clear error message when a new word is presented
+   if (errorMessageElement) {
+      // Ensure it exists before trying to clear it
+      errorMessageElement.innerHTML = "";
+   }
+   document.getElementById("translationInput").value = ""; // Clear the input field
+
    const level =
       score < 20 ? "basic" : score < 50 ? "intermediate" : "advanced";
    const availableWords = words[level].filter((w) => !usedWords.includes(w.en));
@@ -145,6 +183,10 @@ function resetGame() {
    score = 0;
    usedWords = [];
    loadRanking(); // Mantido aqui para garantir que o ranking seja carregado quando o jogo é resetado manualmente
+   if (errorMessageElement) {
+      // Ensure it exists before trying to clear it
+      errorMessageElement.innerHTML = ""; // Clear error message on game reset
+   }
 
    stopBackgroundMusic();
 }
