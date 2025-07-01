@@ -172,6 +172,12 @@ p {
    font-size: 1.3em;
    color: #666;
    margin-top: 25px;
+   background: rgba(
+      240,
+      240,
+      240,
+      0.5
+   ); /* Cinza claro (240,240,240) com 70% de opacidade */
 }
 
 #score {
@@ -247,4 +253,21 @@ p {
 
 .hidden {
    display: none;
+}
+
+#errorMessage {
+   margin-top: 10px;
+   font-size: 2.5em;
+}
+
+.wrong-answer {
+   color: #e74c3c;
+   font-weight: bold;
+   font-size: 2em;
+}
+
+.correct-answer {
+   color: #27ae60;
+   font-weight: bold;
+   font-size: 2em;
 }
