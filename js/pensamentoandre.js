@@ -99,7 +99,6 @@ const words = {
       { en: "suit", pt: "terno" },
    ],
    advanced: [
-      { en: "grit", pt: "determinação" },
       { en: "whim", pt: "capricho" },
       { en: "bliss", pt: "felicidade plena" },
       { en: "fluke", pt: "acaso improvável" },
@@ -119,7 +118,6 @@ const words = {
       { en: "smirk", pt: "sorriso de canto" },
       { en: "clutch", pt: "agarrar" },
       { en: "swamp", pt: "pântano" },
-      { en: "brisk", pt: "rápido e enérgico" },
       { en: "hassle", pt: "transtorno" },
       { en: "bulk", pt: "volume" },
       { en: "doom", pt: "ruína" },
@@ -144,14 +142,10 @@ const words = {
       { en: "moan", pt: "gemido" },
       { en: "crook", pt: "ladrão" },
       { en: "rookie", pt: "novato" },
-      { en: "knack", pt: "jeitinho" },
-      { en: "gulp", pt: "engolir rapidamente" },
+      { en: "gulp", pt: "gole" },
       { en: "flick", pt: "peteleco" },
       { en: "jolt", pt: "sacudida" },
-      { en: "shabby", pt: "gasto / puído" },
-      { en: "repercussion", pt: "repercussão" },
-      { en: "jurisdiction", pt: "jurisdição" },
-      { en: "protagonism", pt: "protagonismo" },
+      { en: "shabby", pt: "gasto" },
    ],
 };
 
