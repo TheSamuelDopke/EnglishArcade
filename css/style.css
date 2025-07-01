@@ -28,6 +28,18 @@ body {
    position: relative; /* Added to make absolute positioning work relative to the body */
 }
 
+#Mute {
+   position: fixed;
+   top: 20px;
+   left: 20px;
+   z-index: 9999;
+   background: transparent;   /* tira a cor de fundo */
+   border: none;              /* remove borda */
+   padding: 0;                /* remove espaço interno */
+   cursor: pointer;
+   outline: none;             /* remove a borda azul ao clicar (opcional) */
+}
+
 #fireworkContainer {
    position: fixed;
    left: 0;
@@ -160,6 +172,12 @@ p {
    font-size: 1.3em;
    color: #666;
    margin-top: 25px;
+   background: rgba(
+      240,
+      240,
+      240,
+      0.5
+   ); /* Cinza claro (240,240,240) com 70% de opacidade */
 }
 
 #score {
@@ -172,12 +190,7 @@ p {
    top: 50px;
    right: 50px;
    max-width: 400px;
-   background: rgba(
-      240,
-      240,
-      240,
-      0.5
-   ); /* Cinza claro (240,240,240) com 70% de opacidade */
+   background: rgba(240, 240, 240, 0.5); /* Cinza claro (240,240,240) com 70% de opacidade */
    padding: 15px;
    border-radius: 10px;
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);

@@ -96,6 +96,7 @@ function checkTranslation() {
       errorMessageElement.innerHTML = ""; // Limpa a mensagem de erro em caso de sucesso
       nextWord();
    } else {
+      stopBackgroundMusic()
       failSound.currentTime = 0;
       failSound.play();
 

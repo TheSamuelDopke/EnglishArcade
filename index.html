@@ -31,7 +31,7 @@
             <button onclick="checkTranslation()">Enviar</button>
             <button onclick="giveUp()">Desistir</button>
             <p>Pontos: <span id="score">0</span></p>
-            <div
+                        <div
                id="errorMessage"
                style="margin-top: 10px; font-size: 1.1em"
             ></div>
@@ -42,15 +42,19 @@
          <h3>Ranking Top 10</h3>
          <ol id="ranking"></ol>
       </div>
+      
+      <button id="Mute" onclick="muteMusic()"></button>
 
       <audio
          src="./js/backgroundMusic.mp3"
          id="backgroundMusic"
          style="display: none"
       ></audio>
+      
       <script type="module" src="js/music.js"></script>
       <script type="module" src="js/index.db.js"></script>
       <script type="module" src="js/palavras.js"></script>
+      <audio src="sounds/backgroundMusic.mp3" id="backgroundMusic" style="display: none"></audio>
       <div id="fireworkContainer"></div>
 
       <script type="module" src="js/pensamento.js"></script>
