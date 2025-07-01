@@ -5,11 +5,7 @@
 
 body {
    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-   /* background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); */
-
-   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
    background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
-
    color: #333;
    text-align: center;
    padding: 40px;
@@ -18,8 +14,8 @@ body {
    justify-content: center;
    align-items: center;
 
-   min-height: 100vh; /* Garante que o body ocupa a altura total da viewport */
-   box-sizing: border-box; /* Inclui padding e borda na largura/altura */
+   min-height: 100vh;
+   box-sizing: border-box;
    border: 0;
    padding: 0;
    background-image: url(../img/backgroundImageGif.gif);
@@ -29,6 +25,7 @@ body {
 
    min-height: 100vh;
    box-sizing: border-box;
+   position: relative; /* Added to make absolute positioning work relative to the body */
 }
 
 #fireworkContainer {
@@ -92,8 +89,8 @@ body {
    border-radius: 15px;
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
    border: 1px solid rgba(255, 255, 255, 0.3);
-   backdrop-filter: blur(5px); /* Efeito de vidro */
-   -webkit-backdrop-filter: blur(5px); /* Compatibilidade Safari */
+   backdrop-filter: blur(5px);
+   -webkit-backdrop-filter: blur(5px);
 }
 
 h2 {
@@ -104,7 +101,7 @@ h2 {
 }
 
 h3 {
-   color: #555;
+   color: #333;
    margin-top: 30px;
    margin-bottom: 15px;
    font-size: 1.6em;
@@ -171,9 +168,23 @@ p {
 }
 
 #rankingSection {
-   margin-top: 40px;
-   padding-top: 20px;
-   border-top: 1px solid #eee;
+   position: absolute;
+   top: 50px;
+   right: 50px;
+   max-width: 400px;
+   background: rgba(240, 240, 240, 0.5); /* Cinza claro (240,240,240) com 70% de opacidade */
+   padding: 15px;
+   border-radius: 10px;
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+   border: 1px solid rgba(255, 255, 255, 0.3);
+   backdrop-filter: blur(5px);
+   -webkit-backdrop-filter: blur(5px);
+   z-index: 10;
+}
+
+#rankingSection h3 {
+   margin-top: 0; /* Resets any default top margin */
+   margin-bottom: 10px; /* Adds a small bottom margin */
 }
 
 #ranking {
@@ -206,19 +217,19 @@ p {
 
 #ranking li:first-child {
    font-weight: bold;
-   color: #d4af37; /* Cor de ouro para o primeiro lugar */
+   color: #d4af37;
    background-color: #fffacd;
 }
 
 #ranking li:nth-child(2) {
    font-weight: bold;
-   color: #a7a7a7; /* Cor de prata para o segundo lugar */
+   color: #a7a7a7;
    background-color: #ececec;
 }
 
 #ranking li:nth-child(3) {
    font-weight: bold;
-   color: #cd7f32; /* Cor de bronze para o terceiro lugar */
+   color: #cd7f32;
    background-color: #ffe0b2;
 }
 
