@@ -1,4 +1,5 @@
-const audio = document.getElementById("sounds/backgroundMusic");
+const audio = document.getElementById("backgroundMusic");
+audio.src = "sounds/backgroundMusic.mp3"
 let lastVolume = 1
 const botao = document.getElementById("Mute")
 
@@ -14,11 +15,13 @@ export function stopBackgroundMusic() {
 }
 
 export function muteMusic(){
-   if (audio.volume > 0) {
-      lastVolume = audio.volume
+   if (audio.volume > 0){
+      lastVolume = audio.volume 
       audio.volume = 0
    }
    else {
       audio.volume = lastVolume
    }
 }
+
+window.muteMusic = muteMusic

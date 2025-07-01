@@ -28,6 +28,19 @@ body {
    position: relative; /* Added to make absolute positioning work relative to the body */
 }
 
+#Mute {
+   position: fixed;      /* ou absolute, dependendo do caso */
+   top: 20px;            /* distância do topo */
+   left: 20px;          /* distância da direita */
+   z-index: 9999;        /* garante que fique por cima */
+   padding: 10px;
+   background-color: #444;
+   color: white;
+   border: none;
+   border-radius: 8px;
+   cursor: pointer;
+}
+
 #fireworkContainer {
    position: fixed;
    left: 0;
