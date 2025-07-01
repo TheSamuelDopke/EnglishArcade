@@ -172,7 +172,12 @@ p {
    top: 50px;
    right: 50px;
    max-width: 400px;
-   background: rgba(240, 240, 240, 0.5); /* Cinza claro (240,240,240) com 70% de opacidade */
+   background: rgba(
+      240,
+      240,
+      240,
+      0.5
+   ); /* Cinza claro (240,240,240) com 70% de opacidade */
    padding: 15px;
    border-radius: 10px;
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -235,4 +240,21 @@ p {
 
 .hidden {
    display: none;
+}
+
+#errorMessage {
+   margin-top: 10px;
+   font-size: 2.5em;
+}
+
+.wrong-answer {
+   color: #e74c3c;
+   font-weight: bold;
+   font-size: 2em;
+}
+
+.correct-answer {
+   color: #27ae60;
+   font-weight: bold;
+   font-size: 2em;
 }
