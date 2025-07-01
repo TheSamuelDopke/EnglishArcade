@@ -1,7 +1,9 @@
 const audio = document.getElementById("backgroundMusic");
 audio.src = "sounds/backgroundMusic.mp3"
 let lastVolume = 1
+let isMuted = false;
 const botao = document.getElementById("Mute")
+botao.innerHTML = `<img src="img/mute.png" alt="Mutar" style="width: 40px; height: 40px;">`
 
 export function startBackgroundMusic() {
    audio.play();
@@ -15,12 +17,15 @@ export function stopBackgroundMusic() {
 }
 
 export function muteMusic(){
-   if (audio.volume > 0){
-      lastVolume = audio.volume 
-      audio.volume = 0
-   }
-   else {
-      audio.volume = lastVolume
+   if (!isMuted) {
+      lastVolume = audio.volume;
+      audio.volume = 0;
+      isMuted = true;
+      botao.innerHTML = `<img src="img/unmute.png" alt="Som desligado" style="width: 40px; height: 40px;">`;
+   } else {
+      audio.volume = lastVolume;
+      isMuted = false;
+      botao.innerHTML = `<img src="img/mute.png" alt="Som ligado" style="width: 40px; height: 40px;">`;
    }
 }
 

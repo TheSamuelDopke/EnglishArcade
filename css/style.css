@@ -29,16 +29,15 @@ body {
 }
 
 #Mute {
-   position: fixed;      /* ou absolute, dependendo do caso */
-   top: 20px;            /* distância do topo */
-   left: 20px;          /* distância da direita */
-   z-index: 9999;        /* garante que fique por cima */
-   padding: 10px;
-   background-color: #444;
-   color: white;
-   border: none;
-   border-radius: 8px;
+   position: fixed;
+   top: 20px;
+   left: 20px;
+   z-index: 9999;
+   background: transparent;   /* tira a cor de fundo */
+   border: none;              /* remove borda */
+   padding: 0;                /* remove espaço interno */
    cursor: pointer;
+   outline: none;             /* remove a borda azul ao clicar (opcional) */
 }
 
 #fireworkContainer {
