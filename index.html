@@ -8,6 +8,8 @@
    </head>
    <body>
       <div id="app">
+         <button id="Mute" onclick="muteMusic()"></button>
+
          <div id="nicknameSection">
             <h2>Digite seu nickname:</h2>
             <input
@@ -38,27 +40,30 @@
                style="margin-top: 10px; font-size: 1.1em"
             ></div>
 
-            <div id="afterMistakeButtons" class="hidden" style="margin-top: 20px;">
+            <div
+               id="afterMistakeButtons"
+               class="hidden"
+               style="margin-top: 20px"
+            >
                <button onclick="playAgain()">Jogar Novamente</button>
                <button onclick="goToNicknameScreen()">Trocar Nickname</button>
             </div>
-            </div>
+         </div>
       </div>
 
       <div id="rankingSection">
          <h3>Ranking Top 10</h3>
          <ol id="ranking"></ol>
       </div>
-      
-      <button id="Mute" onclick="muteMusic()"></button>
 
       <audio
          src="./js/backgroundMusic.mp3"
          id="backgroundMusic"
          style="display: none"
       ></audio>
-      
-      <div id="fireworkContainer"></div> <script type="module" src="js/music.js"></script>
+
+      <div id="fireworkContainer"></div>
+      <script type="module" src="js/music.js"></script>
       <script type="module" src="js/index.db.js"></script>
       <script type="module" src="js/palavras.js"></script>
       <script type="module" src="js/pensamento.js"></script>
