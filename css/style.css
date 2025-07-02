@@ -25,7 +25,7 @@ body {
 
    min-height: 100vh;
    box-sizing: border-box;
-   position: relative; /* Added to make absolute positioning work relative to the body */
+   position: relative; 
 }
 
 #Mute {
@@ -33,11 +33,11 @@ body {
    top: 20px;
    left: 20px;
    z-index: 9999;
-   background: transparent;   /* tira a cor de fundo */
-   border: none;              /* remove borda */
-   padding: 0;                /* remove espaço interno */
+   background: transparent;  
+   border: none;              
+   padding: 0;             
    cursor: pointer;
-   outline: none;             /* remove a borda azul ao clicar (opcional) */
+   outline: none;             
 }
 
 #fireworkContainer {
@@ -177,7 +177,7 @@ p {
       240,
       240,
       0.5
-   ); /* Cinza claro (240,240,240) com 70% de opacidade */
+   );
 }
 
 #score {
@@ -190,7 +190,7 @@ p {
    top: 50px;
    right: 50px;
    max-width: 400px;
-   background: rgba(240, 240, 240, 0.5); /* Cinza claro (240,240,240) com 70% de opacidade */
+   background: rgba(240, 240, 240, 0.5);
    padding: 15px;
    border-radius: 10px;
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -201,8 +201,8 @@ p {
 }
 
 #rankingSection h3 {
-   margin-top: 0; /* Resets any default top margin */
-   margin-bottom: 10px; /* Adds a small bottom margin */
+   margin-top: 0;
+   margin-bottom: 10px;
 }
 
 #ranking {
