@@ -23,9 +23,10 @@ export function initDB(callback) {
    };
 }
 
-export function saveNickname(nickname, highScore = 0) {
+export function saveNickname(nickname, currentScore, callback) {
    if (!db) {
       console.error("Banco de dados não inicializado.");
+      if (callback) callback();
       return;
    }
 
@@ -35,44 +36,54 @@ export function saveNickname(nickname, highScore = 0) {
    const getReq = store.get(nickname);
    getReq.onsuccess = () => {
       const existing = getReq.result;
-      const maxScore =
-         existing && existing.highScore > highScore
-            ? existing.highScore
-            : highScore;
+      let userHighScore = currentScore;
 
-      const putReq = store.put({ nickname, highScore: maxScore });
+      if (existing) {
+         userHighScore = Math.max(existing.highScore || 0, currentScore);
+      }
+
+      const putReq = store.put({ nickname, highScore: userHighScore });
 
       putReq.onsuccess = () => {
-         console.log("Usuário salvo:", nickname, "Pontuação:", maxScore);
+         console.log("Usuário salvo/atualizado:", nickname, "Maior Pontuação:", userHighScore);
+         if (callback) callback();
       };
       putReq.onerror = () => {
          console.error("Erro ao salvar usuário:", nickname);
+         if (callback) callback();
       };
    };
    getReq.onerror = () => {
-      console.error("Erro ao buscar usuário:", nickname);
+      console.error("Erro ao buscar usuário para salvar nickname:", nickname);
+      if (callback) callback();
    };
 }
 
 export function getSavedNickname(callback) {
-   if (!db) {
-      console.error("Banco de dados não inicializado.");
-      return;
-   }
+    if (!db) {
+        console.error("Banco de dados não inicializado.");
+        callback(null);
+        return;
+    }
 
-   const tx = db.transaction("users", "readonly");
-   const store = tx.objectStore("users");
-   const request = store.getAll();
+    const tx = db.transaction("users", "readonly");
+    const store = tx.objectStore("users");
 
-   request.onsuccess = () => {
-      const result = request.result;
-      if (result.length > 0) callback(result[0].nickname);
-   };
-
-   request.onerror = () => {
-      console.error("Erro ao buscar nickname salvo.");
-   };
+    const request = store.getAll();
+    request.onsuccess = () => {
+        const result = request.result;
+        if (result.length > 0) {
+            callback(result[0].nickname);
+        } else {
+            callback(null);
+        }
+    };
+    request.onerror = () => {
+        console.error("Erro ao obter nickname salvo.");
+        callback(null);
+    };
 }
+
 
 export function saveToRanking(nickname, score, callback) {
    if (!db) {
@@ -81,16 +92,18 @@ export function saveToRanking(nickname, score, callback) {
       return;
    }
 
-   const tx = db.transaction("ranking", "readwrite");
-   const store = tx.objectStore("ranking");
+   const txRanking = db.transaction("ranking", "readwrite");
+   const storeRanking = txRanking.objectStore("ranking");
 
-   const getAllReq = store.getAll();
+   const getAllReq = storeRanking.getAll();
    getAllReq.onsuccess = () => {
       let data = getAllReq.result;
-      const existing = data.find((entry) => entry.nickname === nickname);
+      const existingInRanking = data.find((entry) => entry.nickname === nickname);
 
-      if (existing) {
-         if (score > existing.score) existing.score = score;
+      if (existingInRanking) {
+         if (score > existingInRanking.score) {
+            existingInRanking.score = score;
+         }
       } else {
          data.push({ nickname, score });
       }
@@ -98,36 +111,40 @@ export function saveToRanking(nickname, score, callback) {
       data.sort((a, b) => b.score - a.score);
       data = data.slice(0, 10);
 
-      const clearReq = store.clear();
+      const clearReq = storeRanking.clear();
       clearReq.onsuccess = () => {
          let putCount = 0;
          if (data.length === 0) {
-            if (callback) callback();
+            saveNickname(nickname, score, callback);
             return;
          }
 
          data.forEach((entry) => {
-            const putReq = store.put(entry);
+            const putReq = storeRanking.put(entry);
             putReq.onsuccess = () => {
                putCount++;
-               if (putCount === data.length && callback) callback();
+               if (putCount === data.length) {
+                  saveNickname(nickname, score, callback);
+               }
             };
             putReq.onerror = () => {
                console.error("Erro ao adicionar item ao ranking.");
                putCount++;
-               if (putCount === data.length && callback) callback();
+               if (putCount === data.length) {
+                  saveNickname(nickname, score, callback);
+               }
             };
          });
       };
       clearReq.onerror = () => {
          console.error("Erro ao limpar o store de ranking.");
-         if (callback) callback();
+         saveNickname(nickname, score, callback);
       };
    };
 
    getAllReq.onerror = () => {
       console.error("Erro ao obter ranking para salvar.");
-      if (callback) callback();
+      saveNickname(nickname, score, callback);
    };
 }
 
