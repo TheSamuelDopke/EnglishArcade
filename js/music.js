@@ -1,9 +1,9 @@
 const audio = document.getElementById("backgroundMusic");
-audio.src = "sounds/backgroundMusic.mp3"
-let lastVolume = 1
+audio.src = "sounds/backgroundMusic.mp3";
+let lastVolume = 1;
 let isMuted = false;
-const botao = document.getElementById("Mute")
-botao.innerHTML = `<img src="img/mute.png" alt="Mutar" style="width: 40px; height: 40px;">`
+const botao = document.getElementById("Mute");
+botao.innerHTML = `<img src="img/mute.png" alt="Mutar" style="width: 20px; height: 20px;">`;
 
 export function startBackgroundMusic() {
    audio.play();
@@ -16,17 +16,17 @@ export function stopBackgroundMusic() {
    audio.currentTime = 0;
 }
 
-export function muteMusic(){
+export function muteMusic() {
    if (!isMuted) {
       lastVolume = audio.volume;
       audio.volume = 0;
       isMuted = true;
-      botao.innerHTML = `<img src="img/unmute.png" alt="Som desligado" style="width: 40px; height: 40px;">`;
+      botao.innerHTML = `<img src="img/unmute.png" alt="Som desligado" style="width: 20px; height: 20px;">`;
    } else {
       audio.volume = lastVolume;
       isMuted = false;
-      botao.innerHTML = `<img src="img/mute.png" alt="Som ligado" style="width: 40px; height: 40px;">`;
+      botao.innerHTML = `<img src="img/mute.png" alt="Som ligado" style="width: 20px; height: 20px;">`;
    }
 }
 
-window.muteMusic = muteMusic
+window.muteMusic = muteMusic;

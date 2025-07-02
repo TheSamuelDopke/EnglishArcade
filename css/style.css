@@ -27,19 +27,25 @@ body {
 
    min-height: 100vh;
    box-sizing: border-box;
-   position: relative; 
+   position: relative;
+}
+
+#app {
+   position: relative;
+   padding-top: 50px;
+   padding-left: 50px;
 }
 
 #Mute {
-   position: fixed;
-   top: 20px;
-   left: 20px;
+   position: absolute;
+   top: 8px;
+   left: 8px;
    z-index: 9999;
-   background: transparent;  
-   border: none;              
-   padding: 0;             
+   background: transparent;
+   border: none;
+   padding: 0;
    cursor: pointer;
-   outline: none;             
+   outline: none;
 }
 
 #fireworkContainer {
@@ -174,12 +180,7 @@ p {
    font-size: 1.3em;
    color: #666;
    margin-top: 25px;
-   background: rgba(
-      240,
-      240,
-      240,
-      0.5
-   );
+   background: rgba(240, 240, 240, 0.5);
 }
 
 #score {
