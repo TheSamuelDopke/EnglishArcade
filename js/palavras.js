@@ -202,7 +202,7 @@ export const words = {
     { en: "load", pt: ["carga", "peso", "carregar"] },
     { en: "bid", pt: ["oferta", "lance", "licitar"] }, 
     { en: "edge", pt: ["borda", "vantagem", "fio"] }, 
-    { en: "claim", pt: ["alegação", "reivindicação", "alegar"] }, 
+    { en: "claim", pt: ["alegação", "reivindicação", "alegar", "reivindicar"] }, 
     { en: "sue", pt: ["processar", "demandar"] }, 
     { en: "fine", pt: ["multa", "bem", "excelente"] }, 
     { en: "gap", pt: ["lacuna", "intervalo", "brecha"] }, 

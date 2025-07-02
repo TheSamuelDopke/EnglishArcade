@@ -111,6 +111,7 @@ export function checkTranslation() {
       scoreSpan.textContent = score;
       nextWord();
    } else {
+      stopBackgroundMusic()
       failSound.currentTime = 0;
       failSound.play();
 
