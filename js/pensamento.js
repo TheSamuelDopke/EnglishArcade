@@ -32,6 +32,7 @@ let muteButton;
 let sendButton;
 let giveUpButton;
 
+export { score, usedWords, currentWord, translationInput, errorMessageElement };
 document.addEventListener("DOMContentLoaded", () => {
     
     nicknameInput = document.getElementById("nicknameInput");
@@ -360,3 +361,18 @@ window.giveUp = giveUp;
 window.playAgain = playAgain;
 window.goToNicknameScreen = goToNicknameScreen;
 window.muteMusic = muteMusic;
+export {
+  startGame,
+  checkTranslation,
+  giveUp,
+  playAgain,
+  goToNicknameScreen,
+  muteMusic,
+  nextWord,
+  resetGame,
+  score,
+  usedWords,
+  currentWord,
+  translationInput,
+  errorMessageElement
+};
