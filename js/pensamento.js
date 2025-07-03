@@ -1,7 +1,5 @@
-
 // Palavras por nível - Mantenha esta declaração única
 import { words } from "./palavras.js";
-
 
 import {
    initDB,
@@ -11,7 +9,11 @@ import {
    getRanking,
 } from "./index.db.js";
 
-import { startBackgroundMusic, stopBackgroundMusic, muteMusic } from "./music.js";
+import {
+   startBackgroundMusic,
+   stopBackgroundMusic,
+   muteMusic,
+} from "./music.js";
 
 let nickname = "";
 let score = 0;
@@ -36,26 +38,25 @@ let sendButton;
 let giveUpButton;
 
 document.addEventListener("DOMContentLoaded", () => {
-    
-    nicknameInput = document.getElementById("nicknameInput");
-    playerNameSpan = document.getElementById("playerName");
-    nicknameSection = document.getElementById("nicknameSection");
-    gameSection = document.getElementById("gameSection");
-    englishWordDiv = document.getElementById("englishWord");
-    translationInput = document.getElementById("translationInput");
-    scoreSpan = document.getElementById("score");
-    errorMessageElement = document.getElementById("errorMessage");
-    afterMistakeButtons = document.getElementById("afterMistakeButtons");
-    rankingList = document.getElementById("ranking");
+   nicknameInput = document.getElementById("nicknameInput");
+   playerNameSpan = document.getElementById("playerName");
+   nicknameSection = document.getElementById("nicknameSection");
+   gameSection = document.getElementById("gameSection");
+   englishWordDiv = document.getElementById("englishWord");
+   translationInput = document.getElementById("translationInput");
+   scoreSpan = document.getElementById("score");
+   errorMessageElement = document.getElementById("errorMessage");
+   afterMistakeButtons = document.getElementById("afterMistakeButtons");
+   rankingList = document.getElementById("ranking");
 
-    sendButton = document.querySelector("#gameSection button:nth-of-type(1)");
-    giveUpButton = document.querySelector("#gameSection button:nth-of-type(2)");
+   sendButton = document.querySelector("#gameSection button:nth-of-type(1)");
+   giveUpButton = document.querySelector("#gameSection button:nth-of-type(2)");
 
-    initDB(() => {
-        getSavedNickname((savedNickname) => {
-            displayRanking();
-        });
-    });
+   initDB(() => {
+      getSavedNickname((savedNickname) => {
+         displayRanking();
+      });
+   });
 });
 
 export function startGame() {
@@ -70,7 +71,7 @@ export function startGame() {
    playerNameSpan.textContent = nickname;
    nicknameSection.classList.add("hidden");
    gameSection.classList.remove("hidden");
-   
+
    translationInput.value = "";
    translationInput.focus();
    score = 0;
@@ -95,8 +96,8 @@ export function checkTranslation() {
    afterMistakeButtons.classList.add("hidden");
 
    if (!currentWord) {
-       errorMessageElement.textContent = "Nenhuma palavra para traduzir.";
-       return;
+      errorMessageElement.textContent = "Nenhuma palavra para traduzir.";
+      return;
    }
 
    let isCorrect = false;
@@ -114,7 +115,7 @@ export function checkTranslation() {
       scoreSpan.textContent = score;
       nextWord();
    } else {
-      stopBackgroundMusic()
+      stopBackgroundMusic();
       failSound.currentTime = 0;
       failSound.play();
 
@@ -136,57 +137,58 @@ export function checkTranslation() {
       sendButton.classList.add("hidden");
       giveUpButton.classList.add("hidden");
 
-      saveNickname(nickname, score); 
+      saveNickname(nickname, score);
    }
 }
 
 export function playAgain() {
-    saveToRanking(nickname, score, () => {
-        console.log("Pontuação salva no ranking ao jogar novamente.");
-        displayRanking();
-        
-        score = 0;
-        scoreSpan.textContent = score;
-        usedWords = [];
-        errorMessageElement.innerHTML = "";
-        afterMistakeButtons.classList.add("hidden");
-        translationInput.value = "";
-        translationInput.focus();
+   saveToRanking(nickname, score, () => {
+      console.log("Pontuação salva no ranking ao jogar novamente.");
+      displayRanking();
 
-        translationInput.disabled = false;
-        sendButton.classList.remove("hidden");
-        giveUpButton.classList.remove("hidden");
+      score = 0;
+      scoreSpan.textContent = score;
+      usedWords = [];
+      errorMessageElement.innerHTML = "";
+      afterMistakeButtons.classList.add("hidden");
+      translationInput.value = "";
+      translationInput.focus();
 
-        nextWord();
-        startBackgroundMusic();
-    });
+      translationInput.disabled = false;
+      sendButton.classList.remove("hidden");
+      giveUpButton.classList.remove("hidden");
+
+      nextWord();
+      startBackgroundMusic();
+   });
 }
 
 export function goToNicknameScreen() {
-    stopBackgroundMusic();
-    gameSection.classList.add("hidden");
-    nicknameSection.classList.remove("hidden");
-    nicknameInput.value = ""; 
-    nicknameInput.focus();
-    errorMessageElement.innerHTML = "";
-    afterMistakeButtons.classList.add("hidden");
-    
-    saveToRanking(nickname, score, () => {
-        score = 0; 
-        scoreSpan.textContent = score;
-        usedWords = [];
-        displayRanking(); 
-    });
+   stopBackgroundMusic();
+   gameSection.classList.add("hidden");
+   nicknameSection.classList.remove("hidden");
+   nicknameInput.value = "";
+   nicknameInput.focus();
+   errorMessageElement.innerHTML = "";
+   afterMistakeButtons.classList.add("hidden");
 
-    translationInput.disabled = false;
-    sendButton.classList.remove("hidden");
-    giveUpButton.classList.remove("hidden");
+   saveToRanking(nickname, score, () => {
+      score = 0;
+      scoreSpan.textContent = score;
+      usedWords = [];
+      displayRanking();
+   });
+
+   translationInput.disabled = false;
+   sendButton.classList.remove("hidden");
+   giveUpButton.classList.remove("hidden");
 }
 
 export function giveUp() {
    if (!currentWord) {
-       errorMessageElement.textContent = "Nenhuma palavra para traduzir para desistir.";
-       return;
+      errorMessageElement.textContent =
+         "Nenhuma palavra para traduzir para desistir.";
+      return;
    }
 
    let correctTranslation;
@@ -194,6 +196,7 @@ export function giveUp() {
       correctTranslation = currentWord.pt.join(", ");
    } else {
       correctTranslation = currentWord.pt;
+      failSound.play();
    }
 
    errorMessageElement.innerHTML = `
@@ -214,21 +217,19 @@ export function giveUp() {
 }
 
 function displayRanking() {
-   rankingList.innerHTML = "";
-
    getRanking((ranking) => {
-      if (ranking && ranking.length > 0) {
-         ranking.forEach((entry) => {
-            const scoreToDisplay = typeof entry.score === 'number' ? entry.score : 0;
-            const listItem = document.createElement("li");
-            listItem.textContent = `${entry.nickname}: ${scoreToDisplay} pontos`;
-            rankingList.appendChild(listItem);
-         });
-      } else {
-         const listItem = document.createElement("li");
-         listItem.textContent = "Nenhum ranking disponível ainda.";
-         rankingList.appendChild(listItem);
+      rankingList.innerHTML = "";
+      if (ranking.length === 0) {
+         rankingList.innerHTML = "<li>Nenhum recorde ainda.</li>";
+         return;
       }
+      ranking.forEach((entry, index) => {
+         const li = document.createElement("li");
+         li.textContent = `${index + 1}° ${entry.nickname}: ${
+            entry.score
+         } pontos`; // Corrigido para entry.score
+         rankingList.appendChild(li);
+      });
    });
 }
 
@@ -244,7 +245,9 @@ function nextWord() {
    const level =
       score < 20 ? "basic" : score < 50 ? "intermediate" : "advanced";
    const allWordsInLevel = words[level];
-   const availableWords = allWordsInLevel.filter((w) => !usedWords.includes(w.en));
+   const availableWords = allWordsInLevel.filter(
+      (w) => !usedWords.includes(w.en)
+   );
 
    if (availableWords.length === 0) {
       let nextLevel = "";
@@ -253,14 +256,20 @@ function nextWord() {
 
       if (nextLevel && words[nextLevel] && words[nextLevel].length > 0) {
          usedWords = [];
-         currentWord = words[nextLevel][Math.floor(Math.random() * words[nextLevel].length)];
+         currentWord =
+            words[nextLevel][
+               Math.floor(Math.random() * words[nextLevel].length)
+            ];
          usedWords.push(currentWord.en);
          englishWordDiv.textContent = currentWord.en;
          errorMessageElement.textContent = `Nível ${level} completo! Passando para o nível ${nextLevel}.`;
-         setTimeout(() => { errorMessageElement.textContent = ""; }, 3000);
+         setTimeout(() => {
+            errorMessageElement.textContent = "";
+         }, 3000);
          return;
       } else {
-         errorMessageElement.textContent = "Parabéns! Você traduziu todas as palavras disponíveis. Reiniciando o conjunto de palavras.";
+         errorMessageElement.textContent =
+            "Parabéns! Você traduziu todas as palavras disponíveis. Reiniciando o conjunto de palavras.";
          usedWords = [];
          setTimeout(() => {
             errorMessageElement.textContent = "";
@@ -279,7 +288,7 @@ function nextWord() {
 function resetGame() {
    gameSection.classList.add("hidden");
    nicknameSection.classList.remove("hidden");
-   nicknameInput.value = ""; 
+   nicknameInput.value = "";
    nicknameInput.focus();
    score = 0;
    scoreSpan.textContent = score;
@@ -292,11 +301,12 @@ function resetGame() {
    giveUpButton.classList.remove("hidden");
 
    stopBackgroundMusic();
-   displayRanking(); 
+   displayRanking();
 }
 
 document.addEventListener("keydown", (event) => {
-   if (!nicknameInput || !translationInput || !nicknameSection || !gameSection) return;
+   if (!nicknameInput || !translationInput || !nicknameSection || !gameSection)
+      return;
 
    const nicknameVisible = !nicknameSection.classList.contains("hidden");
    const gameVisible = !gameSection.classList.contains("hidden");
@@ -305,7 +315,11 @@ document.addEventListener("keydown", (event) => {
       if (nicknameVisible && document.activeElement === nicknameInput) {
          event.preventDefault();
          startGame();
-      } else if (gameVisible && document.activeElement === translationInput && !translationInput.disabled) {
+      } else if (
+         gameVisible &&
+         document.activeElement === translationInput &&
+         !translationInput.disabled
+      ) {
          event.preventDefault();
          checkTranslation();
       }
@@ -324,8 +338,10 @@ document.addEventListener("keydown", (event) => {
 function triggerFirework() {
    const container = document.getElementById("fireworkContainer");
    if (!container) {
-       console.warn("Elemento com ID 'fireworkContainer' não encontrado. A animação do Firework não será reproduzida.");
-       return;
+      console.warn(
+         "Elemento com ID 'fireworkContainer' não encontrado. A animação do Firework não será reproduzida."
+      );
+      return;
    }
 
    const launch = document.createElement("div");
