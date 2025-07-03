@@ -9,11 +9,15 @@ import {
    getRanking,
 } from "./index.db.js";
 
-import {
-   startBackgroundMusic,
-   stopBackgroundMusic,
-   muteMusic,
-} from "./music.js";
+import { startBackgroundMusic, stopBackgroundMusic } from "./music.js";
+
+const audio = document.getElementById("backgroundMusic");
+audio.src = "sounds/backgroundMusic.mp3";
+let lastVolumeBackground = 1;
+let lastVolumeEffects = 1;
+let isMuted = false;
+const botao = document.getElementById("Mute");
+botao.innerHTML = `<img src="img/mute.png" alt="Mutar" style="width: 20px; height: 20px;">`;
 
 let nickname = "";
 let score = 0;
@@ -48,9 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
    errorMessageElement = document.getElementById("errorMessage");
    afterMistakeButtons = document.getElementById("afterMistakeButtons");
    rankingList = document.getElementById("ranking");
+   muteButton = document.getElementById("Mute");
 
    sendButton = document.querySelector("#gameSection button:nth-of-type(1)");
    giveUpButton = document.querySelector("#gameSection button:nth-of-type(2)");
+
+   if (muteButton) {
+      muteButton.addEventListener("click", toggleAllSoundsMute);
+   }
 
    initDB(() => {
       getSavedNickname((savedNickname) => {
@@ -58,6 +67,27 @@ document.addEventListener("DOMContentLoaded", () => {
       });
    });
 });
+
+export function toggleAllSoundsMute() {
+   if (!isMuted) {
+      lastVolumeBackground = audio.volume;
+      audio.volume = 0;
+      lastVolumeEffects = successSound.volume;
+      successSound.volume = 0;
+      failSound.volume = 0;
+      isMuted = true;
+      botao.innerHTML = `<img src="img/unmute.png" alt="Som desligado" style="width: 20px; height: 20px;">`;
+   } else {
+      audio.volume = lastVolumeBackground;
+      successSound.volume = lastVolumeEffects;
+      failSound.volume = lastVolumeEffects;
+      isMuted = false;
+      botao.innerHTML = `<img src="img/mute.png" alt="Som ligado" style="width: 20px; height: 20px;">`;
+      if (!gameSection.classList.contains("hidden") && audio.paused) {
+         startBackgroundMusic();
+      }
+   }
+}
 
 export function startGame() {
    nickname = nicknameInput.value.trim();
@@ -86,7 +116,9 @@ export function startGame() {
    giveUpButton.classList.remove("hidden");
 
    nextWord();
-   startBackgroundMusic();
+   if (!isMuted) {
+      startBackgroundMusic();
+   }
 }
 
 export function checkTranslation() {
@@ -108,16 +140,20 @@ export function checkTranslation() {
    }
 
    if (isCorrect) {
-      successSound.currentTime = 0;
-      successSound.play();
+      if (!isMuted) {
+         successSound.currentTime = 0;
+         successSound.play();
+      }
       triggerFirework();
       score++;
       scoreSpan.textContent = score;
       nextWord();
    } else {
       stopBackgroundMusic();
-      failSound.currentTime = 0;
-      failSound.play();
+      if (!isMuted) {
+         failSound.currentTime = 0;
+         failSound.play();
+      }
 
       let correctTranslation;
       if (Array.isArray(currentWord.pt)) {
@@ -159,7 +195,9 @@ export function playAgain() {
       giveUpButton.classList.remove("hidden");
 
       nextWord();
-      startBackgroundMusic();
+      if (!isMuted) {
+         startBackgroundMusic();
+      }
    });
 }
 
@@ -196,7 +234,9 @@ export function giveUp() {
       correctTranslation = currentWord.pt.join(", ");
    } else {
       correctTranslation = currentWord.pt;
-      failSound.play();
+      if (!isMuted) {
+         failSound.play();
+      }
    }
 
    errorMessageElement.innerHTML = `
@@ -227,7 +267,7 @@ function displayRanking() {
          const li = document.createElement("li");
          li.textContent = `${index + 1}° ${entry.nickname}: ${
             entry.score
-         } pontos`; // Corrigido para entry.score
+         } pontos`;
          rankingList.appendChild(li);
       });
    });
@@ -378,4 +418,4 @@ window.checkTranslation = checkTranslation;
 window.giveUp = giveUp;
 window.playAgain = playAgain;
 window.goToNicknameScreen = goToNicknameScreen;
-window.muteMusic = muteMusic;
+window.toggleAllSoundsMute = toggleAllSoundsMute;
