@@ -1,71 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-   <head>
-      <meta charset="UTF-8" />
-      <link rel="shortcut icon" href="img/Brasil.ico" type="image/x-icon" />
-      <title>English Arcade</title>
-      <link rel="stylesheet" href="css/style.css" />
-   </head>
-   <body>
-      <div id="app">
-         <button id="Mute" onclick="muteMusic()"></button>
 
-         <div id="nicknameSection">
-            <h2>Digite seu nickname:</h2>
-            <input
-               type="text"
-               id="nicknameInput"
-               placeholder="Seu nome ou apelido"
-               maxlength="20"
-               autocomplete="off"
-               maxlength="20"
-            />
-            <button onclick="startGame()">Começar</button>
-         </div>
+<head>
+   <meta charset="UTF-8" />
+   <link rel="shortcut icon" href="img/Brasil.ico" type="image/x-icon" />
+   <title>English Arcade</title>
+   <link rel="stylesheet" href="css/style.css" />
+</head>
 
-         <div id="gameSection" class="hidden">
-            <h2>Bem-vindo, <span id="playerName"></span>!</h2>
-            <div class="word" id="englishWord"></div>
-            <input
-               type="text"
-               id="translationInput"
-               placeholder="Digite a tradução"
-               autocomplete="off"
-            />
-            <button onclick="checkTranslation()">Enviar</button>
-            <button onclick="giveUp()">Desistir</button>
-            <p>Pontos: <span id="score">0</span></p>
-            <div
-               id="errorMessage"
-               style="margin-top: 10px; font-size: 1.1em"
-            ></div>
+<body>
+   <div id="app">
+      <button id="Mute" onclick="muteMusic()"></button>
 
-            <div
-               id="afterMistakeButtons"
-               class="hidden"
-               style="margin-top: 20px"
-            >
-               <button onclick="playAgain()">Jogar Novamente</button>
-               <button onclick="goToNicknameScreen()">Trocar Nickname</button>
-            </div>
-         </div>
+      <div id="nicknameSection">
+         <h2>Digite seu nickname:</h2>
+         <input type="text" id="nicknameInput" placeholder="Seu nome ou apelido" maxlength="20" autocomplete="off"
+            maxlength="20" />
+         <button id="startgame" onclick="startGame()">Começar</button>
       </div>
 
-      <div id="rankingSection">
-         <h3>Ranking Top 10</h3>
-         <ol id="ranking"></ol>
+      <div id="gameSection" class="hidden">
+         <h2>Bem-vindo, <span id="playerName"></span>!</h2>
+         <div class="word" id="englishWord"></div>
+         <input type="text" id="translationInput" placeholder="Digite a tradução" autocomplete="off" />
+         <button onclick="checkTranslation()">Enviar</button>
+         <button onclick="giveUp()">Desistir</button>
+         <p>Pontos: <span id="score">0</span></p>
+         <div id="errorMessage" style="margin-top: 10px; font-size: 1.1em"></div>
+
+         <div id="afterMistakeButtons" class="hidden" style="margin-top: 20px">
+            <button onclick="playAgain()">Jogar Novamente</button>
+            <button onclick="goToNicknameScreen()">Trocar Nickname</button>
+         </div>
       </div>
+   </div>
 
-      <audio
-         src="./js/backgroundMusic.mp3"
-         id="backgroundMusic"
-         style="display: none"
-      ></audio>
+   <div id="rankingSection">
+      <h3>Ranking Top 10</h3>
+      <ol id="ranking"></ol>
+   </div>
 
-      <div id="fireworkContainer"></div>
-      <script type="module" src="js/music.js"></script>
-      <script type="module" src="js/index.db.js"></script>
-      <script type="module" src="js/palavras.js"></script>
-      <script type="module" src="js/pensamento.js"></script>
-   </body>
+   <div id="testes-resultados"></div>
+
+   <audio src="./js/backgroundMusic.mp3" id="backgroundMusic" style="display: none"></audio>
+
+   <!--
+   <button id="rodarTestesUnitBtn" onclick="runUnitTests()">Rodar Testes Unitarios</button>
+   <button id="rodarTestesComponentBtn" onclick="runComponentTests()">Rodar Testes Component</button>
+   -->
+
+   <div id="fireworkContainer"></div>
+   <script type="module" src="js/music.js"></script>
+   <script type="module" src="js/index.db.js"></script>
+   <script type="module" src="js/palavras.js"></script>
+   <script type="module" src="js/pensamento.js"></script>
+   <script src="js/rodarTestes.js"></script>
+   <script type="module" src="tests/component.test.js"></script>
+   <script type="module" src="tests/unitario.test.js"></script>
+</body>
+
 </html>
