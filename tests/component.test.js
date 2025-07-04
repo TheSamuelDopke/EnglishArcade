@@ -18,8 +18,8 @@ export function runComponentTests() {
         if (!input) throw new Error("input da tradução da palavra não encontrado");
     });
 
-    // Teste 4: área de exibição da palavra correta em inglês
-    testar("COMPONENT - englishWord existe", () => {
+    // Teste 4: área de exibição da palavra em inglês
+    testar("COMPONENT - palavra em inglês existe", () => {
         const el = document.getElementById("englishWord");
         if (!el) throw new Error("englishWord não encontrado");
     });
@@ -34,6 +34,12 @@ export function runComponentTests() {
     testar("COMPONENT - ranking existe", () => {
         const ranking = document.getElementById("rankingSection")
         if(!ranking) throw new Error("rank dos jogadores não encontrado")
+    })
+
+    // Teste 7: botão de começar
+    testar("COMPONENT - botão de começar existe", () => {
+        const startbutton = document.getElementById("startgame")
+        if(!startbutton) throw new Error("botão de começar não encontrado")
     })
 }
 
