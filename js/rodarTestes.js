@@ -2,26 +2,40 @@ function testar(nomeDoTeste, funcaoDeTeste) {
     const resultadosDiv = document.getElementById("testes-resultados");
     try {
         funcaoDeTeste();
-        resultadosDiv.textContent += `✅ ${nomeDoTeste}\n`;
+        resultadosDiv.innerHTML += `<p style="color: white;">✅ ${nomeDoTeste}</p>`;
     } catch (erro) {
-        resultadosDiv.textContent += `❌ ${nomeDoTeste} - ${erro.message}\n`;
+        resultadosDiv.innerHTML += `<p style="color: red;">❌ ${nomeDoTeste} - ${erro.message}</p>`;
     }
 }
 
-document.getElementById("rodarTestesComponentBtn").addEventListener("click", () => {
-    document.getElementById("testes-resultados").textContent = "";
-    if (typeof runComponentTests === "function") {
-        runComponentTests();
-    } else {
-        resultadosDiv.textContent = "❌ Função runComponentTests() não encontrada!";
-    }
-});
+// Torna a função visível para os testes
+window.testar = testar;
 
-document.getElementById("rodarTestesUnitBtn").addEventListener("click", () => {
-    document.getElementById("testes-resultados").textContent = "";
-    if (typeof runUnitTests === "function") {
-        runUnitTests();
-    } else {
-        resultadosDiv.textContent = "❌ Função runUnitTests() não encontrada!";
+document.addEventListener("DOMContentLoaded", () => {
+    const resultadosDiv = document.getElementById("testes-resultados");
+
+    const botaoUnit = document.getElementById("rodarTestesUnitBtn");
+    const botaoComponent = document.getElementById("rodarTestesComponentBtn");
+
+    if (botaoUnit) {
+        botaoUnit.addEventListener("click", () => {
+            resultadosDiv.textContent = "";
+            if (typeof runUnitTests === "function") {
+                runUnitTests();
+            } else {
+                resultadosDiv.textContent = "❌ Função runUnitTests() não encontrada!";
+            }
+        });
+    }
+
+    if (botaoComponent) {
+        botaoComponent.addEventListener("click", () => {
+            resultadosDiv.textContent = "";
+            if (typeof runComponentTests === "function") {
+                runComponentTests();
+            } else {
+                resultadosDiv.textContent = "❌ Função runComponentTests() não encontrada!";
+            }
+        });
     }
 });
