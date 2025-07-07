@@ -37,6 +37,7 @@ let errorMessageElement;
 let afterMistakeButtons;
 let rankingList;
 let muteButton;
+let erroNick;
 
 let sendButton;
 let giveUpButton;
@@ -53,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
    afterMistakeButtons = document.getElementById("afterMistakeButtons");
    rankingList = document.getElementById("ranking");
    muteButton = document.getElementById("Mute");
+   erroNick = document.getElementById("erroNick")
 
    sendButton = document.querySelector("#gameSection button:nth-of-type(1)");
    giveUpButton = document.querySelector("#gameSection button:nth-of-type(2)");
@@ -91,10 +93,14 @@ export function toggleAllSoundsMute() {
 
 export function startGame() {
    nickname = nicknameInput.value.trim();
-   if (!nickname) {
-      alert("Digite um nome válido!");
+   if (nickname.length <= 0) {
+      erroNick.textContent = "Digite um nome válido!";
       return;
    }
+
+   erroNick.innerHTML = "";
+   errorMessageElement.innerHTML = "";
+   afterMistakeButtons.classList.add("hidden");
 
    saveNickname(nickname, 0);
 
@@ -107,9 +113,6 @@ export function startGame() {
    score = 0;
    scoreSpan.textContent = score;
    usedWords = [];
-
-   errorMessageElement.innerHTML = "";
-   afterMistakeButtons.classList.add("hidden");
 
    translationInput.disabled = false;
    sendButton.classList.remove("hidden");
