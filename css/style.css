@@ -286,3 +286,11 @@ p {
    font-weight: bold;
    font-size: 26px;
 }
+
+.timeNone{
+   display: none;
+}
+
+#pScore{
+   background-color: white;
+}
