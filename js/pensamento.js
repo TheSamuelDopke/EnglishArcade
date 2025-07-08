@@ -84,9 +84,9 @@ export function toggleAllSoundsMute() {
       isMuted = true;
       botao.innerHTML = `<img src="img/unmute.png" alt="Som desligado" style="width: 20px; height: 20px;">`;
    } else {
-      audio.volume = lastVolumeBackground;
-      successSound.volume = lastVolumeEffects;
-      failSound.volume = lastVolumeEffects;
+      audio.volume = 100;
+      successSound.volume = 100;
+      failSound.volume = 100;
       isMuted = false;
       botao.innerHTML = `<img src="img/mute.png" alt="Som ligado" style="width: 20px; height: 20px;">`;
       if (!gameSection.classList.contains("hidden") && audio.paused) {
