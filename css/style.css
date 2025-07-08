@@ -280,3 +280,9 @@ p {
    color: #e74c3c;
    font-size: 1.5em;
 }
+
+.timeOver{
+   color: #e74c3c;
+   font-weight: bold;
+   font-size: 26px;
+}

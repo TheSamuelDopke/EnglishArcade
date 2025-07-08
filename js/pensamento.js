@@ -1,6 +1,8 @@
 // Palavras por nível - Mantenha esta declaração única
 import { words } from "./palavras.js";
 
+import {resetTimer} from "./tempoPontos.js"
+
 import {
    initDB,
    saveNickname,
@@ -10,6 +12,8 @@ import {
 } from "./index.db.js";
 
 import { startBackgroundMusic, stopBackgroundMusic } from "./music.js";
+
+import { iniciarIntervaloResposta } from "./tempoPontos.js";
 
 const audio = document.getElementById("backgroundMusic");
 audio.src = "sounds/backgroundMusic.mp3";
@@ -118,6 +122,8 @@ export function startGame() {
    sendButton.classList.remove("hidden");
    giveUpButton.classList.remove("hidden");
 
+
+   iniciarIntervaloResposta()
    nextWord();
    if (!isMuted) {
       startBackgroundMusic();
@@ -151,6 +157,7 @@ export function checkTranslation() {
       score++;
       scoreSpan.textContent = score;
       nextWord();
+      iniciarIntervaloResposta()
    } else {
       stopBackgroundMusic();
       if (!isMuted) {
@@ -201,6 +208,7 @@ export function playAgain() {
       if (!isMuted) {
          startBackgroundMusic();
       }
+      iniciarIntervaloResposta()
    });
 }
 
