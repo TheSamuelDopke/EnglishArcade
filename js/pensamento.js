@@ -3,6 +3,7 @@ import { words } from "./palavras.js";
 
 import {resetTimer} from "./tempoPontos.js"
 
+
 import {
    initDB,
    saveNickname,
@@ -14,6 +15,10 @@ import {
 import { startBackgroundMusic, stopBackgroundMusic } from "./music.js";
 
 import { iniciarIntervaloResposta } from "./tempoPontos.js";
+
+
+
+
 
 const audio = document.getElementById("backgroundMusic");
 audio.src = "sounds/backgroundMusic.mp3";
@@ -96,6 +101,7 @@ export function toggleAllSoundsMute() {
 }
 
 export function startGame() {
+   resetTimer()
    nickname = nicknameInput.value.trim();
    if (nickname.length <= 0) {
       erroNick.textContent = "Digite um nome válido!";
@@ -191,7 +197,7 @@ export function playAgain() {
    saveToRanking(nickname, score, () => {
       console.log("Pontuação salva no ranking ao jogar novamente.");
       displayRanking();
-
+      resetTimer()
       score = 0;
       scoreSpan.textContent = score;
       usedWords = [];
@@ -231,6 +237,8 @@ export function goToNicknameScreen() {
    translationInput.disabled = false;
    sendButton.classList.remove("hidden");
    giveUpButton.classList.remove("hidden");
+
+   
 }
 
 export function giveUp() {

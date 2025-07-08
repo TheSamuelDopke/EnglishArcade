@@ -1,6 +1,6 @@
 let errorMessageElementTime = document.getElementById("errorMessage");
 let responseInterval
-export let remainingTime = 10
+let remainingTime = 11
 let showTimer = document.getElementById('showTimer')
 import { stopBackgroundMusic, startBackgroundMusic } from "./music.js";
 
@@ -8,9 +8,14 @@ import { stopBackgroundMusic, startBackgroundMusic } from "./music.js";
   var giveUpButton = document.querySelector("#gameSection button:nth-of-type(2)");
 
 export function iniciarIntervaloResposta(){
+
     clearInterval(responseInterval)
+    if(showTimer.classList.contains('timeOver')){
+        showTimer.classList.remove('timeOver')
+    }
+
     showTimer.classList.add("timeOver")
-    remainingTime = 10
+    remainingTime = 11
     responseInterval = setInterval(() => {
     if(!sendButton.classList.contains("hidden")){
         remainingTime--;
@@ -36,7 +41,7 @@ export function iniciarIntervaloResposta(){
 }
 
 export function resetTimer(){
-    remainingTime = 10
+    remainingTime = 11
     
 
 }
