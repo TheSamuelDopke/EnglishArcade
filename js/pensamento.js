@@ -1,7 +1,7 @@
 // Palavras por nível - Mantenha esta declaração única
 import { words } from "./palavras.js";
 
-import {resetTimer} from "./tempoPontos.js"
+import { resetTimer } from "./tempoPontos.js"
 
 
 import {
@@ -62,8 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
    errorMessageElement = document.getElementById("errorMessage");
    afterMistakeButtons = document.getElementById("afterMistakeButtons");
    rankingList = document.getElementById("ranking");
-   muteButton = document.getElementById("Mute");
-   erroNick = document.getElementById("erroNick")
+   erroNick = document.getElementById("erroNick");
+
+   sendButton = document.querySelector("#gameSection button:nth-of-type(1)");
+   giveUpButton = document.querySelector("#gameSection button:nth-of-type(2)");
 
    sendButton = document.querySelector("#gameSection button:nth-of-type(1)");
    giveUpButton = document.querySelector("#gameSection button:nth-of-type(2)");
@@ -78,27 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
    });
 });
-
-export function toggleAllSoundsMute() {
-   if (!isMuted) {
-      lastVolumeBackground = audio.volume;
-      audio.volume = 0;
-      lastVolumeEffects = successSound.volume;
-      successSound.volume = 0;
-      failSound.volume = 0;
-      isMuted = true;
-      botao.innerHTML = `<img src="img/unmute.png" alt="Som desligado" style="width: 20px; height: 20px;">`;
-   } else {
-      audio.volume = 100;
-      successSound.volume = 100;
-      failSound.volume = 100;
-      isMuted = false;
-      botao.innerHTML = `<img src="img/mute.png" alt="Som ligado" style="width: 20px; height: 20px;">`;
-      if (!gameSection.classList.contains("hidden") && audio.paused) {
-         startBackgroundMusic();
-      }
-   }
-}
 
 export function startGame() {
    resetTimer()
@@ -155,7 +136,7 @@ export function checkTranslation() {
    }
 
    if (isCorrect) {
-      if (!isMuted) {
+      if (!window.isMuted) {
          successSound.currentTime = 0;
          successSound.play();
       }
@@ -166,7 +147,7 @@ export function checkTranslation() {
       iniciarIntervaloResposta()
    } else {
       stopBackgroundMusic();
-      if (!isMuted) {
+      if (!window.isMuted) {
          failSound.currentTime = 0;
          failSound.play();
       }
@@ -238,7 +219,7 @@ export function goToNicknameScreen() {
    sendButton.classList.remove("hidden");
    giveUpButton.classList.remove("hidden");
 
-   
+
 }
 
 export function giveUp() {
@@ -284,9 +265,8 @@ function displayRanking() {
       }
       ranking.forEach((entry, index) => {
          const li = document.createElement("li");
-         li.textContent = `${index + 1}° ${entry.nickname}: ${
-            entry.score
-         } pontos`;
+         li.textContent = `${index + 1}° ${entry.nickname}: ${entry.score
+            } pontos`;
          rankingList.appendChild(li);
       });
    });
@@ -317,7 +297,7 @@ function nextWord() {
          usedWords = [];
          currentWord =
             words[nextLevel][
-               Math.floor(Math.random() * words[nextLevel].length)
+            Math.floor(Math.random() * words[nextLevel].length)
             ];
          usedWords.push(currentWord.en);
          englishWordDiv.textContent = currentWord.en;
@@ -422,9 +402,8 @@ function triggerFirework() {
          const y = Math.sin(angle) * radius;
          particle.style.setProperty("--x", `${x}px`);
          particle.style.setProperty("--y", `${-y}px`);
-         particle.style.backgroundColor = `hsl(${
-            Math.random() * 360
-         }, 100%, 60%)`;
+         particle.style.backgroundColor = `hsl(${Math.random() * 360
+            }, 100%, 60%)`;
          container.appendChild(particle);
 
          setTimeout(() => particle.remove(), 600);
@@ -437,7 +416,6 @@ window.checkTranslation = checkTranslation;
 window.giveUp = giveUp;
 window.playAgain = playAgain;
 window.goToNicknameScreen = goToNicknameScreen;
-window.toggleAllSoundsMute = toggleAllSoundsMute;
 window.getScore = () => score;
 window.setScore = (val) => { score = val };
 window.getUsedWords = () => usedWords;
@@ -446,3 +424,6 @@ window.getCurrentWord = () => currentWord;
 window.setCurrentWord = (val) => { currentWord = val };
 window.nextWord = nextWord;
 window.resetGame = resetGame;
+window.successSound = successSound
+window.failSound = failSound;
+window.isMuted = isMuted;

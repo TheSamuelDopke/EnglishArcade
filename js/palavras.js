@@ -111,7 +111,6 @@ export const words = {
     { en: "window", pt: "janela" },
     { en: "roof", pt: "telhado" },
     { en: "garden", pt: "jardim" },
-    { en: "milkman", pt: "leiteiro" },
     { en: "lamp", pt: "lâmpada" },
     { en: "doorbell", pt: "campainha" },
     { en: "brush", pt: "escova" },
