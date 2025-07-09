@@ -211,7 +211,7 @@ p {
 #ranking {
    list-style-type: none;
    padding: 0;
-   max-height: 250px;
+   max-height: auto;
    overflow-y: auto;
    border: 1px solid #eee;
    border-radius: 8px;
@@ -259,20 +259,22 @@ p {
 }
 
 #errorMessage {
-   margin-top: 10px;
-   font-size: 2.5em;
+   margin-top: 0px;
+   font-size: 1.5em;
+   height: min-content;
+   padding: 0;
 }
 
 .wrong-answer {
    color: #e74c3c;
    font-weight: bold;
-   font-size: 2em;
+   font-size: 1.8em;
 }
 
 .correct-answer {
    color: #27ae60;
    font-weight: bold;
-   font-size: 2em;
+   font-size: 1.8em;
 }
 
 #erroNick{
@@ -285,6 +287,7 @@ p {
    color: #e74c3c;
    font-weight: bold;
    font-size: 26px;
+
 }
 
 .timeNone{
@@ -293,4 +296,9 @@ p {
 
 #pScore{
    background-color: white;
+}
+
+#gameSection{
+   margin: 0;
+   padding: 0;
 }

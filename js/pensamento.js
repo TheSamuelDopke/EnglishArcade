@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
    });
 });
 
-export function startGame() {
+function startGame() {
    resetTimer()
    nickname = nicknameInput.value.trim();
    if (nickname.length <= 0) {
@@ -117,7 +117,10 @@ export function startGame() {
    }
 }
 
-export function checkTranslation() {
+export function checkTranslation(c = false) {
+   
+   let tempoAcabou = c
+
    const input = translationInput.value.trim().toLowerCase();
 
    errorMessageElement.innerHTML = "";
@@ -157,12 +160,19 @@ export function checkTranslation() {
          correctTranslation = currentWord.pt.join(", ");
       } else {
          correctTranslation = currentWord.pt;
-      }
 
-      errorMessageElement.innerHTML = `
+      }
+      if(tempoAcabou == false){
+         errorMessageElement.innerHTML = `
             <span class="wrong-answer">${input}</span><br>
             <span class="correct-answer">${correctTranslation}</span>
         `;
+      }else{
+         errorMessageElement.innerHTML = `
+            <span class="correct-answer">${correctTranslation}</span>
+        `;
+      }
+
 
       afterMistakeButtons.classList.remove("hidden");
 
@@ -207,7 +217,7 @@ export function goToNicknameScreen() {
    nicknameInput.focus();
    errorMessageElement.innerHTML = "";
    afterMistakeButtons.classList.add("hidden");
-
+   resetTimer()
    saveToRanking(nickname, score, () => {
       score = 0;
       scoreSpan.textContent = score;
@@ -253,6 +263,7 @@ export function giveUp() {
       console.log("Pontuação salva e ranking atualizado após desistência.");
       displayRanking();
    });
+
    stopBackgroundMusic();
 }
 
