@@ -6,7 +6,6 @@ Um jogo interativo para praticar inglês de forma divertida! O **English Arcade*
 
 ## 📌 Funcionalidades
 
-- ✅ Seleção de temas de vocabulário
 - ✅ Múltiplas fases e desafios
 - ✅ Contador de pontuação e progresso
 - ✅ Feedback imediato para respostas corretas/incorretas
